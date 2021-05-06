@@ -1,5 +1,78 @@
 pipeline {
     agent any
+    
+    
+    
+    options {
+		buildDiscarder(logRotator(numToKeepStr:'30'))
+		timeout(time:3, unit: 'HOURS')
+		//skipDefaultCheckout true
+	}
+	
+	parameters {
+
+		booleanParam(defaultValue: false, name: 'CLEAN')
+		booleanParam(defaultValue: false, name: 'BUILD')
+		booleanParam(defaultValue: false, name: 'PACKAGE')
+		booleanParam(defaultValue: false, name: 'TEST')
+		booleanParam(defaultValue: false, name: 'DEPLOY')
+		booleanParam(defaultValue: false, name: 'SONAR')
+		booleanParam(defaultValue: false, name: 'SAST')
+		booleanParam(defaultValue: false, name: 'TDARSANITY')
+		booleanParam(defaultValue: false, name: 'COMPLETE')
+		
+		string(name: 'SWM_PKGVERSION', description: 'Format: 2006-SNAPSHOT.yyMMddHH.git7')
+		choice(choices: '''com.att.bbnms.ml.DEV1b
+com.att.bbnms.ml.DEV2b
+com.att.bbnms.ml.DEV3b
+com.att.bbnms.ml.DEV5b
+com.att.bbnms.ml.DEV6b
+com.att.bbnms.ml.DEV7b
+com.att.bbnms.ml.IT1b
+com.att.bbnms.ml.IT2b
+com.att.bbnms.ml.IT3b
+com.att.bbnms.ml.IT4b
+com.att.bbnms.ml.IT5b
+com.att.bbnms.ml.IT6b
+com.att.bbnms.ml.IT7b
+com.att.bbnms.ml.IT8b
+com.att.bbnms.ml.IT9b
+com.att.bbnms.ml.IT10b
+com.att.bbnms.ml.ST1-admin
+com.att.bbnms.ml.ST1-app
+com.att.bbnms.ml.ST1-batch
+com.att.bbnms.ml.ST2-admin
+com.att.bbnms.ml.ST2-app
+com.att.bbnms.ml.ST3b
+com.att.bbnms.ml.ST4b
+com.att.bbnms.ml.ST4Cb
+com.att.bbnms.ml.ST5b
+com.att.bbnms.ml.ST6-admin
+com.att.bbnms.ml.ST6-app
+com.att.bbnms.ml.ST6-batch
+com.att.bbnms.ml.ST7b
+com.att.bbnms.ml.ST8b
+com.att.bbnms.ml.ST9b
+com.att.bbnms.ml.ST10b
+com.att.bbnms.ml.MOB1b
+com.att.bbnms.ml.PF1b
+com.att.bbnms.ml.F1-admin
+com.att.bbnms.ml.F1-app
+com.att.bbnms.ml.F1-batch
+com.att.bbnms.ml.FIE1b
+com.att.bbnms.ml.FIE2b
+com.att.bbnms.ml.SIT5b
+com.att.bbnms.ml.PROD-admin
+com.att.bbnms.ml.PROD-app
+com.att.bbnms.ml.PROD-batch
+com.att.bbnms.ml.DR-admin
+com.att.bbnms.ml.DR-app
+com.att.bbnms.ml.DR-batch''', description: 'Target Environment', name: 'targetEnvironment')
+}
+    
+    
+    
+    
     stages {
         stage('Build') {
             steps {
